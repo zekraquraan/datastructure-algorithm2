@@ -109,34 +109,31 @@ class HashTable:
         Returns a list of all the  keys present in the Hashtable.
         '''
         return self.__keys
-    
-def repeated_word(string):
-    '''
-    A function that finds the first word to occur more than once in a string
-    Arguments: string
-    Return: string
-    '''
-
-    words = string.replace(",","").lower().split()
-    
-    word_table = HashTable()
-    for word in words:
-        if word_table.has(word):
-            return word
-        word_table.set(word, 1)
-    return None
-
-    
-    
 
 
-    
-    
+def leftJoin(hm1, hm2):
+    result = []
+    keys_hm1 = hm1.keys()
 
-if __name__ == "__main__":
-    input_string1 = "Once upon a time, there was a brave princess who..."
-    print(repeated_word(input_string1))  
-    input_string2 = "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way – in short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only..."
-    print(repeated_word(input_string2)) 
-    input_string3 = "It was a queer, sultry summer, the summer they electrocuted the Rosenbergs, and I didn’t know what I was doing in New York..."
-    print(repeated_word(input_string3))
+    for key in keys_hm1:
+        synonym = hm1.get(key)
+        antonym = hm2.get(key)
+        result.append([key, synonym, antonym])
+
+    return result
+
+if __name__=="__main__":
+    hm1 = HashTable()
+    hm1.set("happy", "joyful")
+    hm1.set("sad", "unhappy")
+    hm1.set("big", "large")
+
+    hm2 = HashTable()
+    hm2.set("happy", "sad")
+    hm2.set("angry", "calm")
+    hm2.set("big", "small")
+    result = leftJoin(hm1, hm2)
+    print(result)
+
+
+
