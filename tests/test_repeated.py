@@ -1,16 +1,26 @@
-from hash_map_repeated.hash_map_repeated import repeated_word,find_first_repeated_word,count_word_frequency,tokenize_string
-import pytest
+from hash_map_repeated.hash_map_repeated import repeated_word
 def test_repeated_word():
-    
-    input_string1 = "This is a test string with a repeated word."
-    assert repeated_word(input_string1) == "a"
+    # Test case 1: Regular sentence with a repeated word
+    text1 = 'Once upon a time, there was a brave princess who...'
+    assert repeated_word(text1) == 'a', "Test case 1 failed"
 
-   
-    input_string3 = "hello my name is eman, dad name is mohammad and mum name kholod"
-    assert repeated_word(input_string3) == "name"
+    # Test case 2: Multiple repeated words, first one should be returned
+    text2 = 'It was the best of times, it was the worst of times...'
+    assert repeated_word(text2) == 'it', "Test case 2 failed"
 
-    print("All test cases passed!")
+    # Test case 3: No repeated words, should return 'no words found'
+    text3 = 'This is a test sentence without any repeated words.'
+    assert repeated_word(text3) == 'no words found', "Test case 3 failed"
 
+    # Test case 4: Repeated words with different capitalizations, should be treated as the same word
+    text4 = 'This is a test sentence with a Repeated word and a repeated word.'
+    assert repeated_word(text4) == 'a', "Test case 4 failed"
 
+    # Test case 5: Empty string, should return 'no words found'
+    text5 = ''
+    assert repeated_word(text5) == 'no words found', "Test case 5 failed"
 
+    print("All test cases passed.")
+
+# Run the test cases
 test_repeated_word()
