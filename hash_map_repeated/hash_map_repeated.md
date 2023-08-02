@@ -9,4 +9,4 @@ python hash_map_repeated.py
 ```
 [code link](./repeated_word.py)
 [Test link](./tests/test_repeated.py)
-[whiteBoard](./hashtable1.png)
+[whiteBoard](./repeated223.png)
