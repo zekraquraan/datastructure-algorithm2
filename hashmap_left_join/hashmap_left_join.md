@@ -1,7 +1,7 @@
 
 # White board
 
-![hashmap_left_join](./leftjoinlast.png)
+![hashmap_left_join](./leftjoinlast1234.png)
 
 ## Run in terminal
 
