@@ -1,138 +1,60 @@
-from graph_business_trip.graph_business_trip import Graph, business_trip
+import pytest
+from graph_business_trip.graph_business_trip import business_trip
+from graph.graph import Graph
 
 
-def test_business_trip():
+def test_metroville_to_pandora(flights):
+    graph = flights[0]
+    routes = [flights[4], flights[1]]
+    actual = business_trip(graph, routes)
+    assert actual == (True, 82)
+
+
+def test_arendelle_to_monstropolis_to_neboo(flights):
+    graph = flights[0]
+    routes = [flights[3], flights[5], flights[6]]
+    actual = business_trip(graph, routes)
+    assert actual == (True, 115)
+
+
+def test_naboo_to_pandora(flights):
+    graph = flights[0]
+    routes = [flights[6], flights[1]]
+    actual = business_trip(graph, routes)
+    assert actual == (False, 0)
+
+
+def test_narnia_to_arendelle_to_neboo(flights):
+    graph = flights[0]
+    routes = [flights[2], flights[3], flights[6]]
+    actual = business_trip(graph, routes)
+    assert actual == (False, 0)
+
+
+def test_graph_empty():
     graph = Graph()
-    
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Pandora")
-    graph.add_edge("Metroville", "Pandora", 82)
+    routes = []
+    actual = business_trip(graph, routes)
+    assert actual == (False, 0)
 
-    graph.add_vertex("Pandora")
-    graph.add_vertex("Arendelle")
-    graph.add_edge("Pandora", "Arendelle", 150)
-    
-    graph.add_vertex("Arendelle")
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Narnia")
-    graph.add_edge("Arendelle", "New Monstropolis", 42)
-    graph.add_edge("New Monstropolis", "Naboo", 73)
-    graph.add_edge("Naboo", "Narnia", 250)
-    
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Metroville")
-    graph.add_edge("Naboo", "Metroville", 26)
-    
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Narnia")
-    graph.add_edge("New Monstropolis", "Metroville", 105)
-    graph.add_edge("Arendelle", "Metroville", 99)
-    graph.add_edge("Metroville", "Narnia", 37)
-    
-    city_names = ["Metroville", "Pandora"]
-    cost = business_trip(graph, city_names)
-    assert cost == 82
 
-def test_case_1():
+@pytest.fixture
+def flights():
     graph = Graph()
-    
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Pandora")
-    graph.add_edge("Metroville", "Pandora", 82)
-
-    graph.add_vertex("Pandora")
-    graph.add_vertex("Arendelle")
-    graph.add_edge("Pandora", "Arendelle", 150)
-    
-    graph.add_vertex("Arendelle")
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Narnia")
-    graph.add_edge("Arendelle", "New Monstropolis", 42)
-    graph.add_edge("New Monstropolis", "Naboo", 73)
-    graph.add_edge("Naboo", "Narnia", 250)
-    
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Metroville")
-    graph.add_edge("Naboo", "Metroville", 26)
-    
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Narnia")
-    graph.add_edge("New Monstropolis", "Metroville", 105)
-    graph.add_edge("Arendelle", "Metroville", 99)
-    graph.add_edge("Metroville", "Narnia", 37)
-
-    city_names = ['Arendelle', 'New Monstropolis', 'Naboo']
-    cost = business_trip(graph, city_names)
-    assert cost == 115
-
-def test_case_2():
-    graph = Graph()
-    
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Pandora")
-    graph.add_edge("Metroville", "Pandora", 82)
-
-    graph.add_vertex("Pandora")
-    graph.add_vertex("Arendelle")
-    graph.add_edge("Pandora", "Arendelle", 150)
-    
-    graph.add_vertex("Arendelle")
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Narnia")
-    graph.add_edge("Arendelle", "New Monstropolis", 42)
-    graph.add_edge("New Monstropolis", "Naboo", 73)
-    graph.add_edge("Naboo", "Narnia", 250)
-    
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Metroville")
-    graph.add_edge("Naboo", "Metroville", 26)
-    
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Narnia")
-    graph.add_edge("New Monstropolis", "Metroville", 105)
-    graph.add_edge("Arendelle", "Metroville", 99)
-    graph.add_edge("Metroville", "Narnia", 37)
-
-    city_names = ['Naboo', 'Pandora']
-    cost = business_trip(graph, city_names)
-    assert cost is None
-
-def test_case_3():
-    graph = Graph()
-    
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Pandora")
-    graph.add_edge("Metroville", "Pandora", 82)
-
-    graph.add_vertex("Pandora")
-    graph.add_vertex("Arendelle")
-    graph.add_edge("Pandora", "Arendelle", 150)
-    
-    graph.add_vertex("Arendelle")
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Narnia")
-    graph.add_edge("Arendelle", "New Monstropolis", 42)
-    graph.add_edge("New Monstropolis", "Naboo", 73)
-    graph.add_edge("Naboo", "Narnia", 250)
-    
-    graph.add_vertex("Naboo")
-    graph.add_vertex("Metroville")
-    graph.add_edge("Naboo", "Metroville", 26)
-    
-    graph.add_vertex("New Monstropolis")
-    graph.add_vertex("Metroville")
-    graph.add_vertex("Narnia")
-    graph.add_edge("New Monstropolis", "Metroville", 105)
-    graph.add_edge("Arendelle", "Metroville", 99)
-    graph.add_edge("Metroville", "Narnia", 37)
-
-    city_names = ['Narnia', 'Arendelle', 'Naboo']
-    cost = business_trip(graph, city_names)
-    assert cost is None
+    pandora = graph.add_node("pandora")
+    arendelle = graph.add_node("arendelle")
+    metroville = graph.add_node("metroville")
+    monstropolis = graph.add_node("monstropolis")
+    narnia = graph.add_node("narnia")
+    naboo = graph.add_node("naboo")
+    graph.add_edge(pandora, arendelle, 150)
+    graph.add_edge(pandora, metroville, 82)
+    graph.add_edge(arendelle, metroville, 99)
+    graph.add_edge(arendelle, monstropolis, 42)
+    graph.add_edge(metroville, monstropolis, 105)
+    graph.add_edge(metroville, naboo, 26)
+    graph.add_edge(metroville, narnia, 37)
+    graph.add_edge(metroville, pandora, 82)
+    graph.add_edge(monstropolis, naboo, 73)
+    graph.add_edge(narnia, naboo, 250)
+    return [graph, pandora, narnia, arendelle, metroville, monstropolis, naboo]

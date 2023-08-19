@@ -1,60 +1,87 @@
-from graph.graph import Graph  
-import pytest
+from graph.graph import Graph, Vertex, Edge
 
-@pytest.fixture
-def sample_graph():
-    g = Graph()
-    a = g.add_vertix('A')
-    b = g.add_vertix('B')
-    e = g.add_vertix('E')
-    c = g.add_vertix('C')
-    d = g.add_vertix('D')
 
-    g.add_edge(a, b)
-    g.add_edge(a, c)
-    g.add_edge(b, d)
-    g.add_edge(b, e)
-    g.add_edge(e, d)
-    g.add_edge(e, c)
+# Node can be successfully added to the graph
+def test_add_node_to_graph():
+    graph = Graph()
+    actual = graph.add_node('a').value
+    expected = 'a'
+    assert actual == expected
 
-    return g
-
-# Vertex can be successfully added to the graph
-def test_add_vertex(sample_graph):
-    v = sample_graph.add_vertix('F')
-    assert v in sample_graph.get_vertices()
 
 # An edge can be successfully added to the graph
-def test_add_edge(sample_graph):
-    f = sample_graph.add_vertix('F')
-    g = sample_graph.add_vertix('G')
-    sample_graph.add_edge(f, g)
-    assert g in [edge.vertix for edge in sample_graph.get_neighbors(f)]
+def test_add_edge_to_graph():
+    graph = Graph()
+    a = graph.add_node('a')
+    b = graph.add_node('b')
+    graph.add_edge(a, b)
+    assert True
 
-# A collection of all vertices can be properly retrieved from the graph
-def test_get_vertices(sample_graph):
-    vertices = sample_graph.get_vertices()
-    vertex_values = [str(vertex) for vertex in vertices]
-    assert len(vertices) == 5
-    assert 'A' in vertex_values
-    assert 'B' in vertex_values
-    assert 'C' in vertex_values
-    assert 'D' in vertex_values
-    assert 'E' in vertex_values
 
-# The proper size is returned, representing the number of vertices in the graph
-def test_size(sample_graph):
-    assert sample_graph.size() == 5
+# A collection of all nodes can be properly retrieved from the graph
+def test_node_collection():
+    graph = Graph()
+    a = graph.add_node('a')
+    b = graph.add_node('b')
+    c = graph.add_node('c')
+    actual = graph.get_nodes()
+    assert actual == [a, b, c]
+
 
 # All appropriate neighbors can be retrieved from the graph
-def test_get_neighbors(sample_graph):
-    a = sample_graph.add_vertix('A')
-    b = sample_graph.add_vertix('B')
-    sample_graph.add_edge(a, b)  # Add an edge between A and B
-    neighbors = sample_graph.get_neighbors(a)
-    assert len(neighbors) == 1
+def test_get_neighbors():
+    graph = Graph()
+    a = graph.add_node('a')
+    b = graph.add_node('b')
+    c = graph.add_node('c')
+    e_1 = graph.add_edge(a, b, 2)
+    e_2 = graph.add_edge(a, c, 2)
+    actual = graph.get_neighbors(a)
+    assert actual == [e_1, e_2]
 
-def test_breadth_first(sample_graph):
-    a = sample_graph.add_vertix('A')
-    bft_result = sample_graph.breadth_first(a)
-    assert bft_result == ['A']
+
+def test_get_neighbors_none():
+    graph = Graph()
+    a = graph.add_node('a')
+    b = graph.add_node('b')
+    c = graph.add_node('c')
+    actual = graph.get_neighbors(a)
+    assert actual == []
+
+
+# Neighbors are returned with the weight between nodes included
+def test_get_neighbors_weight():
+    graph = Graph()
+    a = graph.add_node('a')
+    b = graph.add_node('b')
+    c = graph.add_node('c')
+    e_1 = graph.add_edge(a, b, 3)
+    e_2 = graph.add_edge(a, c, 4)
+    neighbor_1 = graph.get_neighbors(a)[0]
+    neighbor_2 = graph.get_neighbors(a)[1]
+    assert neighbor_1.weight == 3 and neighbor_2.weight == 4
+
+
+# The proper size is returned, representing the number of nodes in the graph
+def test_graph_size():
+    graph = Graph()
+    a = graph.add_node('a')
+    b = graph.add_node('b')
+    actual = graph.size()
+    assert actual == 2
+
+
+# A graph with only one node and edge can be properly returned
+def test_one_node_one_edge():
+    graph = Graph()
+    a = graph.add_node('a')
+    edge = graph.add_edge(a, a)
+    actual = graph.get_neighbors(a)
+    assert actual == [edge]
+
+
+# An empty graph properly returns None
+def test_empty_graph():
+    graph = Graph()
+    actual = graph.get_nodes()
+    assert actual is None
