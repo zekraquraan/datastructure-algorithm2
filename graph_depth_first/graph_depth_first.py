@@ -8,6 +8,9 @@ class Graph:
         self.nodes = []
 
     def depth_first(self, start_node):
+        if not self.nodes:
+            return []
+        
         visited = set()
         result = []
         self._depth_first_recursive(start_node, visited, result)
@@ -19,6 +22,8 @@ class Graph:
             result.append(node.value)
             for neighbor in node.neighbors:
                 self._depth_first_recursive(neighbor, visited, result)
+
+        
 
 # Create nodes
 A = Node('A')
